@@ -18,7 +18,7 @@ import java.util.Objects;
 
 @Service
 @Slf4j
-public class EDisclosureImpl implements EDisclosure {
+public class EDisclosureClientImpl implements EDisclosureClient {
 
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0";
 
@@ -26,12 +26,12 @@ public class EDisclosureImpl implements EDisclosure {
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public EDisclosureImpl(RestClient restClient, ObjectMapper objectMapper) {
+    public EDisclosureClientImpl(RestClient restClient, ObjectMapper objectMapper) {
         this.restClient = restClient;
         this.objectMapper = objectMapper;
     }
     @Override
-    public List<EventInfoDto> getAllEventsBy(String companyId, Integer year) {
+    public List<EventInfoDto> getAllEventsBy(Long companyId, Integer year) {
         List<EventInfoDto> events;
 
         URI uri = UriComponentsBuilder.fromHttpUrl(String.format(TEMPLATE_ALL_EVENTS_BY_COMPANY_AND_YEAR, companyId, year))

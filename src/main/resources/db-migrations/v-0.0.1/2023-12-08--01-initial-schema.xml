@@ -2,12 +2,8 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
-        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <changeSet id="1" author="maltster46">
         <createTable tableName="edisclosure_favourites">
@@ -22,9 +18,14 @@
             </column>
         </createTable>
     </changeSet>
+    
+    <changeSet id="2" author="maltster">
+        <createSequence sequenceName="edisclosure_history_seq"/>
+    </changeSet>
 
-    <changeSet id="2" author="maltster46">
+    <changeSet id="3" author="maltster46">
         <createTable tableName="edisclosure_history">
+            <column name="id" type="bigint" valueSequenceNext="edisclosure_history_seq"/>
             <column name="pseudo_guid" type="varchar(64)">
                 <constraints nullable="false" unique="false"/>
             </column>
@@ -46,7 +47,11 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="3" author="maltster46">
+    <changeSet id="4" author="maltster46">
+        <addUniqueConstraint tableName="edisclosure_history" columnNames="pseudo_guid,company_id,pub_date"/>
+    </changeSet>
+
+    <changeSet id="5" author="maltster46">
         <insert tableName="edisclosure_favourites">
             <column name="company_id">347</column>
             <column name="primary_ticker">MOEX:SIBN</column>
