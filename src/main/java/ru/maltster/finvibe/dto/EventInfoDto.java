@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,11 +21,9 @@ public class EventInfoDto {
     private String pseudoGUID;
 
     @JsonProperty("pubDate")
-//    private Instant pubDate;
-    private Date pubDate;
+    private Timestamp pubDate;
 
     @JsonProperty("eventDate")
-//    private Instant eventDate;
-    private Date eventDate;
+    private Timestamp eventDate;
 
 }

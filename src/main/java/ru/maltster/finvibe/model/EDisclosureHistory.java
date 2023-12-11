@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,8 +17,8 @@ public class EDisclosureHistory {
     private String pseudoGUID;
     private Long companyId;
     private String eventName;
-    private Date eventDate;
-    private Date pubDate;
+    private Timestamp eventDate;
+    private Timestamp pubDate;
     private boolean notification;
 
 }

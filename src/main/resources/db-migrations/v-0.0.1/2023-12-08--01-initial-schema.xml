@@ -19,13 +19,11 @@
         </createTable>
     </changeSet>
     
-    <changeSet id="2" author="maltster">
-        <createSequence sequenceName="edisclosure_history_seq"/>
-    </changeSet>
-
-    <changeSet id="3" author="maltster46">
+    <changeSet id="2" author="maltster46">
         <createTable tableName="edisclosure_history">
-            <column name="id" type="bigint" valueSequenceNext="edisclosure_history_seq"/>
+            <column name="id" type="bigint" valueSequenceNext="edisclosure_history_seq" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
             <column name="pseudo_guid" type="varchar(64)">
                 <constraints nullable="false" unique="false"/>
             </column>
@@ -47,11 +45,11 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="4" author="maltster46">
+    <changeSet id="3" author="maltster46">
         <addUniqueConstraint tableName="edisclosure_history" columnNames="pseudo_guid,company_id,pub_date"/>
     </changeSet>
 
-    <changeSet id="5" author="maltster46">
+    <changeSet id="4" author="maltster46">
         <insert tableName="edisclosure_favourites">
             <column name="company_id">347</column>
             <column name="primary_ticker">MOEX:SIBN</column>

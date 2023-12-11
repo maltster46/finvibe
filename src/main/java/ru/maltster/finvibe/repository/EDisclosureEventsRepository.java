@@ -30,15 +30,23 @@ public class EDisclosureEventsRepository {
 
     public List<EDisclosureHistory> getAllHistory() {
         String query = "SELECT id, pseudo_guid, company_id, event_name, event_date, pub_date, notification FROM edisclosure_history";
-        return jdbcTemplate.query(query, new BeanPropertyRowMapper<>(EDisclosureHistory.class));
+        return jdbcTemplate.query(query, (rs, rowNum) -> EDisclosureHistory.builder()
+                .id(rs.getLong("id"))
+                .pseudoGUID(rs.getString("pseudo_guid"))
+                .companyId(rs.getLong("company_id"))
+                .eventName(rs.getString("event_name"))
+                .eventDate(rs.getTimestamp("event_date"))
+                .pubDate(rs.getTimestamp("pub_date"))
+                .notification(rs.getBoolean("notification"))
+                .build());
     }
 
     public void saveEvent(EDisclosureHistory EDisclosureHistory) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("edisclosure_history");
+                .withTableName("edisclosure_history")
+                .usingGeneratedKeyColumns("id");
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("id", EDisclosureHistory.getId());
         parameters.put("pseudo_guid", EDisclosureHistory.getPseudoGUID());
         parameters.put("company_id", EDisclosureHistory.getCompanyId());
         parameters.put("event_name", EDisclosureHistory.getEventName());
