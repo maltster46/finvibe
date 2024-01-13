@@ -6,7 +6,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <changeSet id="1" author="maltster46">
-        <createTable tableName="edisclosure_favourites">
+        <createTable tableName="favourites">
             <column name="company_id" type="bigint">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
@@ -20,8 +20,8 @@
     </changeSet>
     
     <changeSet id="2" author="maltster46">
-        <createTable tableName="edisclosure_history">
-            <column name="id" type="bigint" valueSequenceNext="edisclosure_history_seq" autoIncrement="true">
+        <createTable tableName="history">
+            <column name="id" type="bigint">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
             <column name="pseudo_guid" type="varchar(64)">
@@ -46,131 +46,131 @@
     </changeSet>
 
     <changeSet id="3" author="maltster46">
-        <addUniqueConstraint tableName="edisclosure_history" columnNames="pseudo_guid,company_id,pub_date"/>
+        <addUniqueConstraint tableName="history" columnNames="pseudo_guid,company_id,pub_date"/>
     </changeSet>
 
     <changeSet id="4" author="maltster46">
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">347</column>
             <column name="primary_ticker">MOEX:SIBN</column>
             <column name="shortname">ПАО Газпром нефть</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">6652</column>
             <column name="primary_ticker">MOEX:GCHE</column>
             <column name="shortname">ПАО Группа Черкизово</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">573</column>
             <column name="primary_ticker">MOEX:PHOR</column>
             <column name="shortname">ПАО ФосАгро</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">6505</column>
             <column name="primary_ticker">MOEX:ROSN</column>
             <column name="shortname">ПАО НК Роснефть</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">7832</column>
             <column name="primary_ticker">MOEX:PLZL</column>
             <column name="shortname">ПАО Полюс</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">9</column>
             <column name="primary_ticker">MOEX:MAGN</column>
             <column name="shortname">ПАО ММК</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">934</column>
             <column name="primary_ticker">MOEX:GAZP</column>
             <column name="shortname">ПАО Газпром</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">199</column>
             <column name="primary_ticker">MOEX:ALRS</column>
             <column name="shortname">ПАО АК АЛРОСА</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">38196</column>
             <column name="primary_ticker">MOEX:POSI</column>
             <column name="shortname">АО Позитив Текнолоджиз</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">38370</column>
             <column name="primary_ticker">MOEX:FIXP</column>
             <column name="shortname">Fix Price Group PLC</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">37646</column>
             <column name="primary_ticker">MOEX:GEMA</column>
             <column name="shortname">ПАО ММЦБ</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">7344</column>
             <column name="primary_ticker">MOEX:PMSB</column>
             <column name="shortname">ПАО Пермэнергосбыт</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">564</column>
             <column name="primary_ticker">MOEX:GMKN</column>
             <column name="shortname">ПАО ГМК Норильский никель</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">942</column>
             <column name="primary_ticker">MOEX:RASP</column>
             <column name="shortname">ПАО Распадская</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">3935</column>
             <column name="primary_ticker">MOEX:BSPB</column>
             <column name="shortname">ПАО Банк Санкт-Петербург</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">38038</column>
             <column name="primary_ticker">MOEX:SGZH</column>
             <column name="shortname">ПАО Сегежа Групп</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">369</column>
             <column name="primary_ticker">MOEX:CNTL</column>
             <column name="shortname">ПАО Центральный телеграф</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">236</column>
             <column name="primary_ticker">MOEX:MTSS</column>
             <column name="shortname">ПАО МТС</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">141</column>
             <column name="primary_ticker">MOEX:RTKM</column>
             <column name="shortname">ПАО Ростелеком</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">7234</column>
             <column name="primary_ticker">MOEX:OGKB</column>
             <column name="shortname">ПАО ОГК-2</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">7671</column>
             <column name="primary_ticker">MOEX:MGNT</column>
             <column name="shortname">ПАО Магнит</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">636</column>
             <column name="primary_ticker">MOEX:TRNFP</column>
             <column name="shortname">ПАО Транснефть</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">936</column>
             <column name="primary_ticker">MOEX:MSNG</column>
             <column name="shortname">ПАО Мосэнерго</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">1641</column>
             <column name="primary_ticker">MOEX:VSMO</column>
             <column name="shortname">ПАО Корпорация ВСМПО-АВИСМА</column>
         </insert>
-        <insert tableName="edisclosure_favourites">
+        <insert tableName="favourites">
             <column name="company_id">11794</column>
             <column name="primary_ticker">MOEX:UGLD</column>
             <column name="shortname">ПАО Южуралзолото ГК</column>
