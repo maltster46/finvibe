@@ -24,12 +24,12 @@ public class EDisclosureEventsRepository {
     }
 
     public List<EDisclosureFavourite> getAllFavourites() {
-        String query = "SELECT company_id, primary_ticker, shortname FROM edisclosure_favourites";
+        String query = "SELECT company_id, primary_ticker, shortname FROM favourites";
         return jdbcTemplate.query(query, new BeanPropertyRowMapper<>(EDisclosureFavourite.class));
     }
 
     public List<EDisclosureHistory> getAllHistory() {
-        String query = "SELECT id, pseudo_guid, company_id, event_name, event_date, pub_date, notification FROM edisclosure_history";
+        String query = "SELECT id, pseudo_guid, company_id, event_name, event_date, pub_date, notification FROM history";
         return jdbcTemplate.query(query, (rs, rowNum) -> EDisclosureHistory.builder()
                 .id(rs.getLong("id"))
                 .pseudoGUID(rs.getString("pseudo_guid"))
@@ -43,7 +43,7 @@ public class EDisclosureEventsRepository {
 
     public void saveEvent(EDisclosureHistory EDisclosureHistory) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("edisclosure_history")
+                .withTableName("history")
                 .usingGeneratedKeyColumns("id");
 
         Map<String, Object> parameters = new HashMap<>();
@@ -58,7 +58,7 @@ public class EDisclosureEventsRepository {
     }
 
     public void setNotificationFlag(long id, boolean notification) {
-        jdbcTemplate.update("UPDATE edisclosure_history SET notification = ? WHERE id = ?",
+        jdbcTemplate.update("UPDATE history SET notification = ? WHERE id = ?",
                 notification, id);
     }
 

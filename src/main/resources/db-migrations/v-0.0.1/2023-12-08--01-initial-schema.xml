@@ -21,7 +21,7 @@
     
     <changeSet id="2" author="maltster46">
         <createTable tableName="history">
-            <column name="id" type="bigint">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
             <column name="pseudo_guid" type="varchar(64)">
