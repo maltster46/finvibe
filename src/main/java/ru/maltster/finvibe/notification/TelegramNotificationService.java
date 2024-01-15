@@ -32,7 +32,6 @@ public class TelegramNotificationService {
                 .queryParam("chat_id", chatId)
                 .queryParam("text", message)
                 .build().toUri();
-        System.out.println(uri);
         restClient.post()
                 .uri(uri)
                 .header(HttpHeaders.ACCEPT, MediaType.ALL_VALUE)
