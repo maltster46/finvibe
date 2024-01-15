@@ -29,11 +29,12 @@ public class EDisclosureEventsRepository {
     }
 
     public List<EDisclosureHistory> getAllHistory() {
-        String query = "SELECT id, pseudo_guid, company_id, event_name, event_date, pub_date, notification FROM history";
+        String query = "SELECT id, pseudo_guid, company_id, company_name, event_name, event_date, pub_date, notification FROM history";
         return jdbcTemplate.query(query, (rs, rowNum) -> EDisclosureHistory.builder()
                 .id(rs.getLong("id"))
                 .pseudoGUID(rs.getString("pseudo_guid"))
                 .companyId(rs.getLong("company_id"))
+                .companyName(rs.getString("company_name"))
                 .eventName(rs.getString("event_name"))
                 .eventDate(rs.getTimestamp("event_date"))
                 .pubDate(rs.getTimestamp("pub_date"))
@@ -49,6 +50,7 @@ public class EDisclosureEventsRepository {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("pseudo_guid", EDisclosureHistory.getPseudoGUID());
         parameters.put("company_id", EDisclosureHistory.getCompanyId());
+        parameters.put("company_name", EDisclosureHistory.getCompanyName());
         parameters.put("event_name", EDisclosureHistory.getEventName());
         parameters.put("event_date", EDisclosureHistory.getEventDate());
         parameters.put("pub_date", EDisclosureHistory.getPubDate());
@@ -63,11 +65,12 @@ public class EDisclosureEventsRepository {
     }
 
     public List<EDisclosureHistory> getAllHistoryWithoutNotification() {
-        String query = "SELECT id, pseudo_guid, company_id, event_name, event_date, pub_date, notification FROM history WHERE notification IS NULL or notification = false";
+        String query = "SELECT id, pseudo_guid, company_id, company_name, event_name, event_date, pub_date, notification FROM history WHERE notification IS NULL or notification = false";
         return jdbcTemplate.query(query, (rs, rowNum) -> EDisclosureHistory.builder()
                 .id(rs.getLong("id"))
                 .pseudoGUID(rs.getString("pseudo_guid"))
                 .companyId(rs.getLong("company_id"))
+                .companyId(rs.getLong("company_name"))
                 .eventName(rs.getString("event_name"))
                 .eventDate(rs.getTimestamp("event_date"))
                 .pubDate(rs.getTimestamp("pub_date"))

@@ -18,15 +18,16 @@ public class EDisclosureHistory {
     private Long id;
     private String pseudoGUID;
     private Long companyId;
+    private String companyName;
     private String eventName;
     private Timestamp eventDate;
     private Timestamp pubDate;
     private boolean notification;
 
     public String getNotificationString() {
-        return String.format("id: %s\nid компании: %s\nДата публикации: %s\nСобытие: %s\nСсылка: %s",
+        return String.format("id: %s\nНазвание компании: %s\nДата публикации: %s\nСобытие: %s\nСсылка: %s",
                 id,
-                companyId,
+                companyName,
                 pubDate,
                 eventName,
                 TEMPLATE_EVENT_URL + pseudoGUID);
