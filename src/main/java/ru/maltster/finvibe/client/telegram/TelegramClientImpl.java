@@ -1,4 +1,4 @@
-package ru.maltster.finvibe.notification;
+package ru.maltster.finvibe.client.telegram;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @Service
-public class TelegramNotificationService {
+public class TelegramClientImpl {
 
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0";
     private static final String TEMPLATE_SEND_MESSAGE = "https://api.telegram.org/bot%s/sendMessage";
@@ -23,7 +23,7 @@ public class TelegramNotificationService {
     private String chatId;
 
     @Autowired
-    public TelegramNotificationService(RestClient restClient) {
+    public TelegramClientImpl(RestClient restClient) {
         this.restClient = restClient;
     }
 
