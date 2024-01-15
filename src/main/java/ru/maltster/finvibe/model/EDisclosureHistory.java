@@ -13,6 +13,8 @@ import java.sql.Timestamp;
 @Data
 public class EDisclosureHistory {
 
+    private static final String TEMPLATE_EVENT_URL = "https://www.e-disclosure.ru/portal/event.aspx?EventId=";
+
     private Long id;
     private String pseudoGUID;
     private Long companyId;
@@ -20,5 +22,14 @@ public class EDisclosureHistory {
     private Timestamp eventDate;
     private Timestamp pubDate;
     private boolean notification;
+
+    public String getNotificationString() {
+        return String.format("id: %s\nid компании: %s\nДата публикации: %s\nСобытие: %s\nСсылка: %s",
+                id,
+                companyId,
+                pubDate,
+                eventName,
+                TEMPLATE_EVENT_URL + pseudoGUID);
+    }
 
 }

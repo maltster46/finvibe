@@ -62,4 +62,17 @@ public class EDisclosureEventsRepository {
                 notification, id);
     }
 
+    public List<EDisclosureHistory> getAllHistoryWithoutNotification() {
+        String query = "SELECT id, pseudo_guid, company_id, event_name, event_date, pub_date, notification FROM history WHERE notification IS NULL or notification = false";
+        return jdbcTemplate.query(query, (rs, rowNum) -> EDisclosureHistory.builder()
+                .id(rs.getLong("id"))
+                .pseudoGUID(rs.getString("pseudo_guid"))
+                .companyId(rs.getLong("company_id"))
+                .eventName(rs.getString("event_name"))
+                .eventDate(rs.getTimestamp("event_date"))
+                .pubDate(rs.getTimestamp("pub_date"))
+                .notification(rs.getBoolean("notification"))
+                .build());
+    }
+
 }
