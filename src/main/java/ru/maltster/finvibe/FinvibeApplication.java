@@ -6,8 +6,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import ru.maltster.finvibe.client.edisclosure.EDisclosureClient;
 import ru.maltster.finvibe.client.edisclosure.EDisclosureClientImpl;
+import ru.maltster.finvibe.model.EDisclosureHistory;
 import ru.maltster.finvibe.notification.TelegramNotificationService;
+import ru.maltster.finvibe.repository.EDisclosureEventsRepository;
 import ru.maltster.finvibe.service.EventCollectorService;
+
+import java.util.List;
 
 @SpringBootApplication
 @Slf4j
@@ -18,6 +22,7 @@ public class FinVibeApplication {
 		EDisclosureClient client = context.getBean(EDisclosureClientImpl.class);
 		EventCollectorService collectorService = context.getBean(EventCollectorService.class);
 		TelegramNotificationService telegramNotificationService = context.getBean(TelegramNotificationService.class);
+		EDisclosureEventsRepository repository = context.getBean(EDisclosureEventsRepository.class);
 
 
 		Long companyId = 347L;
@@ -35,6 +40,13 @@ public class FinVibeApplication {
 			}
 		 */
 			collectorService.collectNewEventsForFavourites();
+			List<EDisclosureHistory> historyEvents = repository.getAllHistoryWithoutNotification();
+			if (!historyEvents.isEmpty()) {
+				EDisclosureHistory event = historyEvents.get(0);
+				String notificationString = event.getNotificationString();
+				telegramNotificationService.send(notificationString);
+				repository.setNotificationFlag(event.getId(), true);
+			}
 		} catch (Exception ex) {
 			log.error("e-disclosure failed", ex);
 		}
