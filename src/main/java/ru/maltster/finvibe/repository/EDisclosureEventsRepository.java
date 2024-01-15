@@ -62,18 +62,19 @@ public class EDisclosureEventsRepository {
                 notification, id);
     }
 
-    public List<EDisclosureHistory> getAllHistoryWithoutNotification() {
-        String query = "SELECT id, pseudo_guid, company_id, company_name, event_name, event_date, pub_date, notification FROM history WHERE notification IS NULL or notification = false";
+    public List<EDisclosureHistory> selectEventForNotification() {
+        String query = "SELECT id, pseudo_guid, company_id, company_name, event_name, event_date, pub_date, notification FROM history " +
+                "WHERE notification IS NULL OR notification = false ORDER BY pub_date LIMIT 1";
         return jdbcTemplate.query(query, (rs, rowNum) -> EDisclosureHistory.builder()
-                .id(rs.getLong("id"))
-                .pseudoGUID(rs.getString("pseudo_guid"))
-                .companyId(rs.getLong("company_id"))
-                .companyId(rs.getLong("company_name"))
-                .eventName(rs.getString("event_name"))
-                .eventDate(rs.getTimestamp("event_date"))
-                .pubDate(rs.getTimestamp("pub_date"))
-                .notification(rs.getBoolean("notification"))
-                .build());
+            .id(rs.getLong("id"))
+            .pseudoGUID(rs.getString("pseudo_guid"))
+            .companyId(rs.getLong("company_id"))
+            .companyName(rs.getString("company_name"))
+            .eventName(rs.getString("event_name"))
+            .eventDate(rs.getTimestamp("event_date"))
+            .pubDate(rs.getTimestamp("pub_date"))
+            .notification(rs.getBoolean("notification"))
+            .build());
     }
 
 }

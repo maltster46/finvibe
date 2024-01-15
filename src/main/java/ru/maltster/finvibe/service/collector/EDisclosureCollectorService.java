@@ -31,7 +31,6 @@ public class EDisclosureCollectorService {
 //    @Scheduled(cron = "* */2 * * * *")
     @Scheduled(fixedDelay = 2, timeUnit = TimeUnit.MINUTES)
     public void collectNewEventsForFavourites() {
-        log.debug("Сборщик новостей edisclosure запущен");
         List<EDisclosureFavourite> favourites = eventsRepository.getAllFavourites();
 
         for (EDisclosureFavourite favourite : favourites) {
@@ -62,7 +61,6 @@ public class EDisclosureCollectorService {
             }
             eventsRepository.saveEvent(prepareToSave);
         }
-        log.debug("Сборщик новостей edisclosure завершил работу");
     }
 
 }
