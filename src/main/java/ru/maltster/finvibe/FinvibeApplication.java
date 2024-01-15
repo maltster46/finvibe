@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import ru.maltster.finvibe.client.edisclosure.EDisclosureClient;
 import ru.maltster.finvibe.client.edisclosure.EDisclosureClientImpl;
+import ru.maltster.finvibe.notification.TelegramNotificationService;
 import ru.maltster.finvibe.service.EventCollectorService;
 
 @SpringBootApplication
@@ -16,6 +17,7 @@ public class FinVibeApplication {
 		ConfigurableApplicationContext context = SpringApplication.run(FinVibeApplication.class, args);
 		EDisclosureClient client = context.getBean(EDisclosureClientImpl.class);
 		EventCollectorService collectorService = context.getBean(EventCollectorService.class);
+		TelegramNotificationService telegramNotificationService = context.getBean(TelegramNotificationService.class);
 
 
 		Long companyId = 347L;
