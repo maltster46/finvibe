@@ -30,22 +30,29 @@ public class EDisclosureClientImpl implements EDisclosureClient {
         this.restClient = restClient;
         this.objectMapper = objectMapper;
     }
+
     @Override
     public List<EventInfoDto> getAllEventsBy(Long companyId, Integer year) {
         List<EventInfoDto> events;
 
         URI uri = UriComponentsBuilder.fromHttpUrl(String.format(TEMPLATE_ALL_EVENTS_BY_COMPANY_AND_YEAR, companyId, year))
                 .build().toUri();
-        String cookieHeader = getCookieHeader(uri);
 
-        String jsonString = restClient.get()
+        ResponseEntity<String> responseEntity = restClient.get()
                 .uri(uri)
                 .header(HttpHeaders.ACCEPT, MediaType.ALL_VALUE)
-                .header(HttpHeaders.COOKIE, cookieHeader)
                 .header(HttpHeaders.USER_AGENT, USER_AGENT)
                 .retrieve()
-                .toEntity(String.class)
-                .getBody();
+                .toEntity(String.class);
+
+        String jsonString;
+        if (responseEntity.getStatusCode().is3xxRedirection()) {
+            List<String> cookies = responseEntity.getHeaders().get(HttpHeaders.SET_COOKIE);
+            String cookieHeader = Objects.isNull(cookies) ? "" : String.join("; ", cookies);
+            jsonString = repeatRequest(uri, cookieHeader);
+        } else {
+            jsonString = responseEntity.getBody();
+        }
         try {
             events = objectMapper.readValue(jsonString, new TypeReference<>() {});
         } catch (Exception ex) {
@@ -58,8 +65,25 @@ public class EDisclosureClientImpl implements EDisclosureClient {
     public String getEventByPseudoGUID(String pseudoGUID) {
         URI uri = UriComponentsBuilder.fromHttpUrl(String.format(TEMPLATE_EVENT_BY_GUID, pseudoGUID))
                 .build().toUri();
-        String cookieHeader = getCookieHeader(uri);
 
+        ResponseEntity<String> responseEntity = restClient.get()
+                .uri(uri)
+                .header(HttpHeaders.ACCEPT, MediaType.ALL_VALUE)
+                .header(HttpHeaders.USER_AGENT, USER_AGENT)
+                .retrieve()
+                .toEntity(String.class);
+        String html;
+        if (responseEntity.getStatusCode().is3xxRedirection()) {
+            List<String> cookies = responseEntity.getHeaders().get(HttpHeaders.SET_COOKIE);
+            String cookieHeader = Objects.isNull(cookies) ? "" : String.join("; ", cookies);
+            html = repeatRequest(uri, cookieHeader);
+        } else {
+            html = responseEntity.getBody();
+        }
+        return html;
+    }
+
+    private String repeatRequest(URI uri, String cookieHeader) {
         return restClient.get()
                 .uri(uri)
                 .header(HttpHeaders.ACCEPT, MediaType.ALL_VALUE)
@@ -68,17 +92,6 @@ public class EDisclosureClientImpl implements EDisclosureClient {
                 .retrieve()
                 .toEntity(String.class)
                 .getBody();
-    }
-
-    private String getCookieHeader(URI uri) {
-        ResponseEntity<String> responseEntity = restClient.get()
-                .uri(uri)
-                .header(HttpHeaders.ACCEPT, MediaType.ALL_VALUE)
-                .header(HttpHeaders.USER_AGENT, USER_AGENT)
-                .retrieve()
-                .toEntity(String.class);
-        List<String> cookies = responseEntity.getHeaders().get(HttpHeaders.SET_COOKIE);
-        return Objects.isNull(cookies) ? "" : String.join("; ", cookies);
     }
 
 }
