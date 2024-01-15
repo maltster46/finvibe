@@ -3,14 +3,12 @@ package ru.maltster.finvibe.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import ru.maltster.finvibe.model.EDisclosureFavourite;
 import ru.maltster.finvibe.model.EDisclosureHistory;
 
-import java.util.HashMap;
+import java.sql.PreparedStatement;
 import java.util.List;
-import java.util.Map;
 
 
 @Repository
@@ -28,8 +26,8 @@ public class EDisclosureEventsRepository {
         return jdbcTemplate.query(query, new BeanPropertyRowMapper<>(EDisclosureFavourite.class));
     }
 
-    public List<EDisclosureHistory> getAllHistory() {
-        String query = "SELECT id, pseudo_guid, company_id, company_name, event_name, event_date, pub_date, notification FROM history";
+    public List<EDisclosureHistory> getAllHistoryByCompanyId(Long companyId) {
+        String query = "SELECT id, pseudo_guid, company_id, company_name, event_name, event_date, pub_date, notification FROM history WHERE company_id = " + companyId;
         return jdbcTemplate.query(query, (rs, rowNum) -> EDisclosureHistory.builder()
                 .id(rs.getLong("id"))
                 .pseudoGUID(rs.getString("pseudo_guid"))
@@ -42,21 +40,21 @@ public class EDisclosureEventsRepository {
                 .build());
     }
 
-    public void saveEvent(EDisclosureHistory EDisclosureHistory) {
-        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("history")
-                .usingGeneratedKeyColumns("id");
-
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("pseudo_guid", EDisclosureHistory.getPseudoGUID());
-        parameters.put("company_id", EDisclosureHistory.getCompanyId());
-        parameters.put("company_name", EDisclosureHistory.getCompanyName());
-        parameters.put("event_name", EDisclosureHistory.getEventName());
-        parameters.put("event_date", EDisclosureHistory.getEventDate());
-        parameters.put("pub_date", EDisclosureHistory.getPubDate());
-        parameters.put("notification", EDisclosureHistory.isNotification());
-
-        simpleJdbcInsert.execute(parameters);
+    public void saveEvent(List<EDisclosureHistory> historyEvents) {
+        jdbcTemplate.batchUpdate(
+                "INSERT INTO history (pseudo_guid, company_id, company_name, event_name, event_date, pub_date, notification) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                historyEvents,
+                100,
+                (PreparedStatement ps, EDisclosureHistory event) -> {
+                    ps.setString(1, event.getPseudoGUID());
+                    ps.setLong(2, event.getCompanyId());
+                    ps.setString(3, event.getCompanyName());
+                    ps.setString(4, event.getEventName());
+                    ps.setTimestamp(5, event.getEventDate());
+                    ps.setTimestamp(6, event.getPubDate());
+                    ps.setBoolean(7, event.isNotification());
+                }
+        );
     }
 
     public void setNotificationFlag(long id, boolean notification) {
